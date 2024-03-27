@@ -7,7 +7,7 @@ export default function LoginPage() {
 		email: "",
 		password: "",
 	});
-  const router = useRouter();
+	const router = useRouter();
 
 	const supabase = createClientComponentClient();
 
@@ -15,21 +15,37 @@ export default function LoginPage() {
 		await supabase.auth.signUp({
 			email: formData.email,
 			password: formData.password,
-      //our email verification
+			//our email verification
 			options: {
-        emailRedirectTo: `${location.origin}/auth/callback` //redirect via that route
-      },
+				emailRedirectTo: `${location.origin}/auth/callback`, //redirect via that route
+			},
 		});
-    router.refresh();
+		router.refresh();
 	}
 
-  async function signInHandler() {
+	async function signInHandler() {
 		await supabase.auth.signInWithPassword({
 			email: formData.email,
 			password: formData.password,
 		});
-    router.refresh();
+		router.refresh();
 	}
 
-	return <div>index</div>;
+	function formHandler(e) {
+		const { name, value } = e.target;
+		setFormData((prev) => ({ ...prev, [name]: value }));
+	}
+
+	return (
+		<div>
+			<form onChange={(e) => formHandler(e)}>
+				<label className="font-bold border-b-2">Email</label>
+				<input type="text" name="email" id="email" />
+				<label className="font-bold border-b-2">Password</label>
+				<input type="password" name="password" id="password" />
+				<button onClick={signUpHandler}>Sign Up</button>
+				<button onClick={signInHandler}>Sign In</button>
+			</form>
+		</div>
+	);
 }
