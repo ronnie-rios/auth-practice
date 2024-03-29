@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const getServerSideProps = async (ctx) => {
   const { userId } = getAuth(ctx.req);
-
+  //example if user logged in, redirect to their secret logged in view pg
   if(userId) {
     return {
       redirect: {
